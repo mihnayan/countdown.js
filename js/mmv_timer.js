@@ -40,6 +40,7 @@ var timer = function (events, actions) {
             if (typeof self.onstartevent == 'function') self.onstartevent(events[currentEvent]);
             if (currentEvent < events.length) {
                 currentEvent++;
+                if (typeof self.onchangeevent == 'function') self.onchangeevent(currentEvent);
                 // setTimeout(function() { count(events[])}, 10);
             }
         }
@@ -58,6 +59,12 @@ var timer = function (events, actions) {
      * @param event событие (мероприятие), начало которого произошло
      */
     this.onstartevent = function (event) {};
+
+    /*
+     * Событие, возникающее при смене текущего мероприятия после того, как наступило предыдущее.
+     * @param eventId идентификатор текущего мероприятия
+     */
+    this.onchangeevent = function (eventId) {};
 
     this.start = function () {
         count(events[currentEvent].timeout);
