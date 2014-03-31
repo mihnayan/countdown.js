@@ -7,12 +7,12 @@
 
  var events = [
     {
-        timeout: 1395576741000,
+        timeout: 1396293177000,
         hide: [1, 2],
         show: [3, 4, 5],
     },
     {
-        timeout: 1395296700000,
+        timeout: 1396293207000,
         hide: [3, 4, 5],
         show: [1,2],
     },
@@ -37,11 +37,11 @@ var timer = function (events, actions) {
             if (typeof self.ontick == 'function') self.ontick(timeout - Date.parse(new Date()));
             setTimeout(function() { count(timeout); }, 1000);
         } else {
-            if (typeof self.onstartevent == 'function') self.onstartevent(events[currentEvent]);
-            if (currentEvent < events.length) {
+            if (typeof self.onstartevent == 'function') self.onstartevent(currentEvent);
+            if (currentEvent < (events.length - 1)) {
                 currentEvent++;
                 if (typeof self.onchangeevent == 'function') self.onchangeevent(currentEvent);
-                // setTimeout(function() { count(events[])}, 10);
+                setTimeout(function() { count(events[currentEvent].timeout)}, 10);
             }
         }
         console.log(timeout - Date.parse(new Date()));
@@ -56,9 +56,9 @@ var timer = function (events, actions) {
     /*
      * Событие, возникающее при начале мероприятия (в данном случае заменено слово "событие"
      * для устранения тавтологии).
-     * @param event событие (мероприятие), начало которого произошло
+     * @param eventId идентификатор события (мероприятия), начало которого произошло
      */
-    this.onstartevent = function (event) {};
+    this.onstartevent = function (eventId) {};
 
     /*
      * Событие, возникающее при смене текущего мероприятия после того, как наступило предыдущее.

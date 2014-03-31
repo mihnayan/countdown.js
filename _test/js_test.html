@@ -33,8 +33,8 @@
         tmr.ontick = function(timeout) {
             document.getElementById('timer').innerHTML = timeout;
         };
-        tmr.onstartevent = function(event) {
-            alert("Событие наступило!");
+        tmr.onstartevent = function(eventId) {
+            alert("Событие #" + eventId + " наступило!");
         }
         tmr.start();
 
