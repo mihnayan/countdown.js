@@ -4,14 +4,88 @@
     <title>Test for js file</title>
     <script type="text/javascript" src="../js/mmv_timer.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        #status-bar {
+            border: 2px solid green;
+            background-color: #cfc;
+            color: green;
+            padding: 4px;
+        }
+        /* 
+            красный f00 - ffb0b0
+            оранжевый ff8027 - ffd0b0
+            желтый b0b000 - ffffb0
+            зеленый 004000 - 9dff9d
+            голубой 0080ff - a8d3ff
+            синий 00f - b0b0ff
+            фиолетовый 400080 - cf9fff
+        */
+        #blocks div {
+            padding: 4px;
+            margin: 2px;
+            width: 25%;
+        }
+        #block-1 {
+            color: #f00;
+            background-color: #ffb0b0;
+        }
+        #block-2 {
+            color: #ff8027;
+            background-color: #ffd0b0;
+        }
+        #block-3 {
+            color: #b0b000;
+            background-color: #ffffb0;
+        }
+        #block-4 {
+            color: #004000;
+            background-color: #9dff9d;
+        }
+        #block-5 {
+            color: #0080ff;
+            background-color: #a8d3ff;
+        }
+        #block-6 {
+            color: #00f;
+            background-color: #b0b0ff;
+        }
+        #block-7 {
+            color: #400080;
+            background-color: #cf9fff;
+        }
+    </style>
 </head>
 <body>
+<div id="status-bar"></div>
 <a href="#" id="startTimeout">Start Timeout</a>
 <form>
     <input type="text">
 </form>
 <div>
     <h2 id="timer"></h2>
+</div>
+<div id="blocks">
+    <div id="block-1">
+        Hello! I'm block #1
+    </div>
+    <div id="block-2">
+        Hello! I'm block #2
+    </div>
+    <div id="block-3">
+        Hello! I'm block #3
+    </div>
+    <div id="block-4">
+        Hello! I'm block #4
+    </div>
+    <div id="block-5">
+        Hello! I'm block #5
+    </div>
+    <div id="block-6">
+        Hello! I'm block #6
+    </div>
+    <div id="block-7">
+        Hello! I'm block #7
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -29,12 +103,12 @@
             st();
         };
 
-        var tmr = new timer(events);
+        var tmr = new timer(events, actions);
         tmr.ontick = function(timeout) {
             document.getElementById('timer').innerHTML = timeout;
         };
         tmr.onstartevent = function(eventId) {
-            alert("Событие #" + eventId + " наступило!");
+            document.getElementById('status-bar').innerHTML = "Событие #" + eventId + " наступило!";
         }
         tmr.start();
 
