@@ -5,32 +5,27 @@
  * @version 0.1
  */
 
- /* TODO:
-1. Сделать работоспособные действия
-2. Необходимо реализовать события таймера так, чтобы они корректно отрабатывлись, если на события
-   подписываются из разных мест.
-*/
-
- var events = [
+var events = [
     {
-        timeout: 1396468371000,
+        timeout: 1396528168000,
         actions: {
             hide: ["block-1", "block-2"],
             show: ["block-3", "block-4", "block-5"],
         },
     },
     {
-        timeout: 1396468401000,
+        timeout: 1396528198000,
         actions: {
             hide: ["block-3", "block-4", "block-5"],
             show: ["block-1", "block-2"],
         },
     },
     {
-        timeout: 1396468431000,
+        timeout: 1396528228000,
         actions: {
             hide: ["block-1", "block-2"],
             show: ["block-3", "block-4", "block-5"],
+            alert: "Все события завершены!"
         },
     },
  ];
@@ -62,7 +57,8 @@ var timer = function (events, actions) {
 
     var execute = function(acts) {
         for (act in acts) {
-            actions[act](acts[act]);
+            if (typeof actions[act] == 'function')
+                actions[act](acts[act]);
         }
     };
 
@@ -96,7 +92,6 @@ var actions = {
     * Скрывает элементы, идентификаторы которых переданы в массиве elements
     */
     hide: function (elements) {
-        console.log("hide ations started");
         for (var i = 0; i < elements.length; i++) {
             var e = document.getElementById(elements[i]);
             if (e != null) e.style.display = 'none';
@@ -104,13 +99,19 @@ var actions = {
     },
 
     /**
-    * Делает видимыми элементы, идентификаторы которых переданы в массиве show_array
+    * Делает видимыми элементы, идентификаторы которых переданы в массиве elements
     */
-    show: function(elements) {
-        console.log("show action started");
+    show: function (elements) {
         for (var i = 0; i < elements.length; i++) {
             var e = document.getElementById(elements[i]);
             if (e != null) e.style.display = 'block';
         }
+    },
+
+    /**
+    * Выводит сообщение str
+    */
+    alert: function (str) {
+        alert(str);
     },
 };
