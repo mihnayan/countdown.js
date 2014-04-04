@@ -34,7 +34,7 @@ var events = [
  * Создает новый таймер с временем отсчета до даты date 
  * и стартом executor по окончанию отсчета
  */
-var timer = function (events, actions) {
+var Timer = function (events, actions) {
 
     var self = this;
     var currentEvent = 0;
@@ -115,3 +115,14 @@ var actions = {
         alert(str);
     },
 };
+
+/***********************************
+        подключаемый код
+***********************************/
+
+var timerView = function () {
+    var viewId = 'mmv-timer-view';
+    var viewBlock = document.getElementById(viewId); 
+    if (viewBlock == null) return;
+    viewBlock.innerHTML = "timer view is worked";
+}();

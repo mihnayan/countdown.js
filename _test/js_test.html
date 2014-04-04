@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Test for js file</title>
-    <script type="text/javascript" src="../js/mmv_timer.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style type="text/css">
         #status-bar {
@@ -61,6 +60,7 @@
 <form>
     <input type="text">
 </form>
+<div id="mmv-timer-view"></div>
 <div>
     <h2 id="timer"></h2>
 </div>
@@ -88,15 +88,15 @@
     </div>
 </div>
 
+<script type="text/javascript" src="../js/mmv_timer.js"></script>
 <script type="text/javascript">
-    document.onload = function () {
-        console.log(events);
-
-        for (var i = 0; i < events.length; i++) {
-            console.log(events[i].timeout);
-            var dt = new Date(events[i].timeout);
-            console.log(dt.toString());
-            // console.log(Date.parse(events[i].timeout));
+    window.onload = function () {
+        /* генарация времени событий: первое событие в 20 сек. от текущего
+           времени. Все последующие события в 20 сек. от предыдущего события.
+        */
+        var firstTime = Date.parse(new Date()) + 20000;
+        for (var i = 0, l = events.length; i < l; i++) {
+            events[i].timeout = firstTime + 20000 * i;
         }
 
         document.getElementById('startTimeout').onclick = function () {
@@ -112,7 +112,7 @@
         }
         tmr.start();
 
-    }();
+    };
 
     var i = 20;
     var st = function () {
