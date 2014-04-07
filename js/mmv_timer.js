@@ -86,6 +86,8 @@ var Timer = function (events, actions) {
     };
 };
 
+var timer = new Timer(events, actions);
+
 // -------------- действия, доступные для выполнения в событиях
 var actions = {
     /**
@@ -124,5 +126,10 @@ var timerView = function () {
     var viewId = 'mmv-timer-view';
     var viewBlock = document.getElementById(viewId); 
     if (viewBlock == null) return;
-    viewBlock.innerHTML = "timer view is worked";
+    timer.ontick = showTime;
+
+    var showTime = function (timeout) {
+        console.log('ok');
+        viewBlock.innerHTML = timeout;
+    }
 }();
