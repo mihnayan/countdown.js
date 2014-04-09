@@ -65,6 +65,10 @@ var plugins = {
     "ontick" : function (timeout) {
         console.log("tick from plugin");
     },
+
+    "onstart" : function () {
+        console.log("timer is running");
+    }
 };
 
  /**
@@ -100,6 +104,11 @@ var Timer = function (events, actions) {
     };
 
     /**
+     * Событие, возникающее при запуске таймера
+     */
+    this.onstart = function () {};
+
+    /**
      * Событие, возникающее при каждом отсчете времени (раз в секунду)
      * @param timeout время, оставшееся до начала текущего события
      */
@@ -119,6 +128,7 @@ var Timer = function (events, actions) {
     this.onchangeevent = function (eventId) {};
 
     this.start = function () {
+        if (typeof self.onstart == 'function') self.onstart();
         count(events[currentEvent].timeout);
     };
 };
@@ -128,6 +138,7 @@ var Timer = function (events, actions) {
     var timer = new Timer(events, actions);
 
     timer.ontick = plugins["ontick"];
+    timer.onstart = plugins["onstart"];
     timer.start();
 })();
 
