@@ -68,6 +68,7 @@ var plugins = {
 
     "onstart" : function () {
         console.log("timer is running");
+        eventsTimeGenerator();
     }
 };
 
