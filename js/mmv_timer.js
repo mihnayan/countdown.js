@@ -30,6 +30,43 @@ var events = [
     },
  ];
 
+ // -------------- действия, доступные для выполнения в событиях
+var actions = {
+    /**
+    * Скрывает элементы, идентификаторы которых переданы в массиве elements
+    */
+    hide: function (elements) {
+        for (var i = 0; i < elements.length; i++) {
+            var e = document.getElementById(elements[i]);
+            if (e != null) e.style.display = 'none';
+        }
+    },
+
+    /**
+    * Делает видимыми элементы, идентификаторы которых переданы в массиве elements
+    */
+    show: function (elements) {
+        for (var i = 0; i < elements.length; i++) {
+            var e = document.getElementById(elements[i]);
+            if (e != null) e.style.display = 'block';
+        }
+    },
+
+    /**
+    * Выводит сообщение str
+    */
+    alert: function (str) {
+        alert(str);
+    },
+};
+
+// ----------------- код, подключаемый к событиям таймера
+var plugins = {
+    "ontick" : function (timeout) {
+        console.log("tick from plugin");
+    },
+};
+
  /**
  * Создает новый таймер с временем отсчета до даты date 
  * и стартом executor по окончанию отсчета
@@ -52,7 +89,7 @@ var Timer = function (events, actions) {
                 setTimeout(function() { count(events[currentEvent].timeout)}, 10);
             }
         }
-        console.log(timeout - Date.parse(new Date()));
+        //console.log(timeout - Date.parse(new Date()));
     }
 
     var execute = function(acts) {
@@ -86,41 +123,21 @@ var Timer = function (events, actions) {
     };
 };
 
-var timer = new Timer(events, actions);
+(function timerDispatcher() {
+    console.log("dispatcher is worked");
+    var timer = new Timer(events, actions);
 
-// -------------- действия, доступные для выполнения в событиях
-var actions = {
-    /**
-    * Скрывает элементы, идентификаторы которых переданы в массиве elements
-    */
-    hide: function (elements) {
-        for (var i = 0; i < elements.length; i++) {
-            var e = document.getElementById(elements[i]);
-            if (e != null) e.style.display = 'none';
-        }
-    },
+    timer.ontick = plugins["ontick"];
+    timer.start();
+})();
 
-    /**
-    * Делает видимыми элементы, идентификаторы которых переданы в массиве elements
-    */
-    show: function (elements) {
-        for (var i = 0; i < elements.length; i++) {
-            var e = document.getElementById(elements[i]);
-            if (e != null) e.style.display = 'block';
-        }
-    },
 
-    /**
-    * Выводит сообщение str
-    */
-    alert: function (str) {
-        alert(str);
-    },
-};
 
 /***********************************
         подключаемый код
 ***********************************/
+
+
 
 var timerView = function () {
     var viewId = 'mmv-timer-view';
@@ -132,4 +149,4 @@ var timerView = function () {
         console.log('ok');
         viewBlock.innerHTML = timeout;
     }
-}();
+};
