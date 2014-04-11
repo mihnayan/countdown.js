@@ -30,6 +30,10 @@ var events = [
     },
  ];
 
+ var settings = {
+    "timer_block_id" : "mmv-timer-view",
+ };
+
  // -------------- действия, доступные для выполнения в событиях
 var actions = {
     /**
@@ -61,14 +65,12 @@ var actions = {
 };
 
 // ----------------- код, подключаемый к событиям таймера
-var plugins = {
-    "ontick" : function (timeout) {
-        console.log("tick from plugin");
-    },
+var ontick_plugin = function () {
+    var viewBlock = document.getElementById(settings.timer_block_id); 
+    if (viewBlock == null) return function () {};
 
-    "onstart" : function () {
-        console.log("timer is running");
-        eventsTimeGenerator();
+    return function (timeout) {
+        viewBlock.innerHTML = timeout;
     }
 };
 
@@ -94,8 +96,7 @@ var Timer = function (events, actions) {
                 setTimeout(function() { count(events[currentEvent].timeout)}, 10);
             }
         }
-        //console.log(timeout - Date.parse(new Date()));
-    }
+    };
 
     var execute = function(acts) {
         for (act in acts) {
@@ -136,29 +137,10 @@ var Timer = function (events, actions) {
 
 (function timerDispatcher() {
     console.log("dispatcher is worked");
+    generateEvents();
     var timer = new Timer(events, actions);
 
-    timer.ontick = plugins["ontick"];
-    timer.onstart = plugins["onstart"];
+    timer.ontick = ontick_plugin();
+    // timer.onstart = plugins["onstart"];
     timer.start();
 })();
-
-
-
-/***********************************
-        подключаемый код
-***********************************/
-
-
-
-var timerView = function () {
-    var viewId = 'mmv-timer-view';
-    var viewBlock = document.getElementById(viewId); 
-    if (viewBlock == null) return;
-    timer.ontick = showTime;
-
-    var showTime = function (timeout) {
-        console.log('ok');
-        viewBlock.innerHTML = timeout;
-    }
-};

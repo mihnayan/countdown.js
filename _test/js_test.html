@@ -95,7 +95,7 @@
     
     /* генарация времени событий: первое событие в 20 сек. от текущего
         времени. Все последующие события в 20 сек. от предыдущего события.*/
-    function eventsTimeGenerator() {
+    function generateEvents() {
         var firstTime = Date.parse(new Date()) + 20000;
         for (var i = 0, l = events.length; i < l; i++) {
             events[i].timeout = firstTime + 20000 * i;
