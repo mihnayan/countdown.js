@@ -35,6 +35,8 @@ var events = [
  };
 
  // -------------- действия, доступные для выполнения в событиях
+ // ------------------------------------------------------------
+
 var actions = {
     /**
     * Скрывает элементы, идентификаторы которых переданы в массиве elements
@@ -65,12 +67,40 @@ var actions = {
 };
 
 // ----------------- код, подключаемый к событиям таймера
+// ------------------------------------------------------
+
 var ontick_plugin = function () {
     var viewBlock = document.getElementById(settings.timer_block_id); 
     if (viewBlock == null) return function () {};
 
+    var secsInDay = 24 * 60 * 60;
+    var secsInHour = 60 * 60;
+    var secsInMin = 60;
+
+    var leadingZero = function (num) {
+            return (num >=10) ? num : "0" + num;
+    };
+
+    var showTimeout = function (days, hours, mins, secs) {
+        viewBlock.innerHTML = "дней: " + days + " " + hours + ":" + mins + ":" + secs;
+    }
+
     return function (timeout) {
-        viewBlock.innerHTML = timeout;
+        var secs = timeout / 1000;
+        timeout = secs % secsInDay;
+        var days = leadingZero((secs - timeout) / secsInDay);
+
+        secs = timeout;
+        timeout = secs % secsInHour;
+        var hours = leadingZero((secs - timeout) / secsInHour);
+
+        secs = timeout;
+        timeout = secs % secsInMin;
+        var mins = leadingZero((secs - timeout) / secsInMin); 
+
+        secs = leadingZero(timeout);
+
+        showTimeout(days, hours, mins, secs);
     }
 };
 
