@@ -30,10 +30,6 @@ var events = [
     },
  ];
 
- var settings = {
-    "timer_block_id" : "mmv-timer-view",
- };
-
  // -------------- действия, доступные для выполнения в событиях
  // ------------------------------------------------------------
 
@@ -70,37 +66,62 @@ var actions = {
 // ------------------------------------------------------
 
 var ontick_plugin = function () {
-    var viewBlock = document.getElementById(settings.timer_block_id); 
+    var viewBlock = document.getElementById('timerbox'); 
     if (viewBlock == null) return function () {};
 
-    var secsInDay = 24 * 60 * 60;
-    var secsInHour = 60 * 60;
-    var secsInMin = 60;
+    var css = "#timerbox{padding: 0;margin:0 auto;line-height: 1.2;color: #2f2f2f;font-family: Helvetica,sans-serif;font-size: 115px;width: 726px;height: 170px;}"
+        + "#timerbox .timerbox-number{float: left; width: 174px; height: 170px; }"
+        + "#timerbox .timerbox-space{float: left; width: 10px; height: 170px; }"
+        + "#timerbox-d1,#timerbox-h1,#timerbox-m1,#timerbox-s1{float: left;text-align: center;background-image:url('http://timegenerator.ru/c/2/flip.png');background-repeat:no-repeat;margin: 0 -3px 0 0;height: 145px;width: 90px;z-index:1;}"
+        + "#timerbox-d2,#timerbox-h2,#timerbox-m2,#timerbox-s2{float: left;text-align: center;background-image:url('http://timegenerator.ru/c/2/flip.png');background-repeat:no-repeat;margin: 0 0 0 -3px;height: 145px;width: 90px;z-index:1;}"
+        + "#timerbox-text{position: absolute;margin-top: 150px;height: 14px;width: 174px; font-size:14px; text-align:center; font-weight:bold;}";
 
-    var leadingZero = function (num) {
-            return (num >=10) ? num : "0" + num;
-    };
+    var head = document.head || document.getElementsByTagName('head')[0],
+        style = document.createElement('style');
 
-    var showTimeout = function (days, hours, mins, secs) {
-        viewBlock.innerHTML = "дней: " + days + " " + hours + ":" + mins + ":" + secs;
+    style.type = 'text/css';
+    if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
     }
+
+    head.appendChild(style);
+
+    var secsInDay = 24 * 60 * 60, secsInHour = 60 * 60, secsInMin = 60;
+
+    var leadingZero = function (num) { return (num >=10) ? num : "0" + num; };
 
     return function (timeout) {
         var secs = timeout / 1000;
         timeout = secs % secsInDay;
-        var days = leadingZero((secs - timeout) / secsInDay);
+        var days = leadingZero((secs - timeout) / secsInDay).toString();
 
         secs = timeout;
         timeout = secs % secsInHour;
-        var hours = leadingZero((secs - timeout) / secsInHour);
+        var hours = leadingZero((secs - timeout) / secsInHour).toString();
 
         secs = timeout;
         timeout = secs % secsInMin;
-        var mins = leadingZero((secs - timeout) / secsInMin); 
+        var mins = leadingZero((secs - timeout) / secsInMin).toString(); 
 
-        secs = leadingZero(timeout);
+        secs = leadingZero(timeout).toString();
 
-        showTimeout(days, hours, mins, secs);
+        viewBlock.innerHTML = "<div class='timerbox-number'><div id='timerbox-d1'><span></span>" + days[0]
+            + "</div><div id='timerbox-d2'><span></span>" + days[1]
+            + "</div><div id='timerbox-text'>ДНЕЙ</div></div>" 
+            + "<div class='timerbox-space'></div>" 
+            + "<div class='timerbox-number'><div id='timerbox-h1'><span></span>" + hours[0]
+            + "</div><div id='timerbox-h2'><span></span>" + hours[1]
+            + "</div><div id='timerbox-text'>ЧАСОВ</div></div>" 
+            + "<div class='timerbox-space'></div>" 
+            + "<div class='timerbox-number'><div id='timerbox-m1'><span></span>" + mins[0]
+            + "</div><div id='timerbox-m2'><span></span>" + mins[1]
+            + "</div><div id='timerbox-text'>МИНУТ</div></div>" 
+            + "<div class='timerbox-space'></div>" 
+            + "<div class='timerbox-number'><div id='timerbox-s1'><span></span>" + secs[0]
+            + "</div><div id='timerbox-s2'><span></span>" + secs[1]
+            + "</div><div id='timerbox-text'>СЕКУНД</div></div>";
     }
 };
 
@@ -166,11 +187,9 @@ var Timer = function (events, actions) {
 };
 
 (function timerDispatcher() {
-    console.log("dispatcher is worked");
     generateEvents();
     var timer = new Timer(events, actions);
 
     timer.ontick = ontick_plugin();
-    // timer.onstart = plugins["onstart"];
     timer.start();
 })();
