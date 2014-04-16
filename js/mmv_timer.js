@@ -135,8 +135,8 @@ var Timer = function (events, actions) {
     var currentEvent = 0;
     
     var count = function(timeout) {
+        if (typeof self.ontick == 'function') self.ontick(timeout - Date.parse(new Date()));
         if (timeout > Date.parse(new Date())) {
-            if (typeof self.ontick == 'function') self.ontick(timeout - Date.parse(new Date()));
             setTimeout(function() { count(timeout); }, 1000);
         } else {
             if (typeof self.onstartevent == 'function') self.onstartevent(currentEvent);
