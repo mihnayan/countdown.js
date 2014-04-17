@@ -23,7 +23,7 @@ var events = [
     {
         timeout: 1396528228000,
         actions: {
-            hide: ["block-1", "block-2"],
+            hide: ["block-6", "block-7"],
             show: ["block-3", "block-4", "block-5"],
             alert: "Все события завершены!"
         },
@@ -186,10 +186,10 @@ var Timer = function (events, actions) {
     };
 };
 
-(function timerDispatcher() {
+window.onload = function () {
     generateEvents();
     var timer = new Timer(events, actions);
 
     timer.ontick = ontick_plugin();
     timer.start();
-})();
+};

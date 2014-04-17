@@ -3,6 +3,20 @@
 <head>
     <title>Test for js file</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("timer will be run");
+        };
+        /* генарация времени событий: первое событие в 20 сек. от текущего
+            времени. Все последующие события в 20 сек. от предыдущего события.*/
+        function generateEvents() {
+            var firstTime = Date.parse(new Date()) + 20000;
+            for (var i = 0, l = events.length; i < l; i++) {
+                events[i].timeout = firstTime + 20000 * i;
+            }
+        }
+    </script>
+    <script type="text/javascript" src="../js/mmv_timer.js"></script>
     <style type="text/css">
         #status-bar {
             border: 2px solid green;
@@ -55,11 +69,6 @@
     </style>
 </head>
 <body>
-<div id="status-bar"></div>
-<a href="#" id="startTimeout">Start Timeout</a>
-<form>
-    <input type="text">
-</form>
 <div id="timerbox"></div>
 <div>
     <h2 id="timer"></h2>
@@ -87,48 +96,5 @@
         Hello! I'm block #7
     </div>
 </div>
-
-<script type="text/javascript">
-/********************************************
-        скрипт, содержащий тестовые функции
-********************************************/
-    
-    /* генарация времени событий: первое событие в 20 сек. от текущего
-        времени. Все последующие события в 20 сек. от предыдущего события.*/
-    function generateEvents() {
-        var firstTime = Date.parse(new Date()) + 20000;
-        for (var i = 0, l = events.length; i < l; i++) {
-            events[i].timeout = firstTime + 20000 * i;
-        }
-    }
-</script>
-<script type="text/javascript" src="../js/mmv_timer.js"></script>
-<!--
-<script type="text/javascript">
-    window.onload = function () {
-
-        document.getElementById('startTimeout').onclick = function () {
-            st();
-        };
-
-        var tmr = new timer(events, actions);
-        tmr.ontick = function(timeout) {
-            document.getElementById('timer').innerHTML = timeout;
-        };
-        tmr.onstartevent = function(eventId) {
-            document.getElementById('status-bar').innerHTML = "Событие #" + eventId + " наступило!";
-        }
-        tmr.start();
-
-    };
-
-    var i = 20;
-    var st = function () {
-        if (i > 0) setTimeout(function() {st();}, 1000);
-        document.getElementById('timer').innerHTML = i;
-        i--;
-    };
-</script>
--->
 </body>
 </html>
